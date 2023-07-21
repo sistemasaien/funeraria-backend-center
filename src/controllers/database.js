@@ -10,6 +10,16 @@ const pool = mysql.createPool({
     enableKeepAlive: true
 });
 
+console.log('try to connect with the next data:', {
+    host: process.env.MYSQLHOST,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    port: process.env.MYSQLPORT,
+    enableKeepAlive: true
+});
+            
+
 //getConnection
 const connect = pool.getConnection(function (err, connection) {
     if (err) {
