@@ -1,5 +1,4 @@
-
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
     host: process.env.MYSQLHOST,
@@ -7,7 +6,9 @@ const pool = mysql.createPool({
     password: process.env.MYSQLPASSWORD,
     database: process.env.MYSQLDATABASE,
     port: process.env.MYSQLPORT,
-    keepAlive: true
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
 console.log('try to connect with the next data:', {
@@ -15,20 +16,7 @@ console.log('try to connect with the next data:', {
     user: process.env.MYSQLUSER,
     password: process.env.MYSQLPASSWORD,
     database: process.env.MYSQLDATABASE,
-    port: process.env.MYSQLPORT,
-    enableKeepAlive: true
-});
-            
-
-//getConnection
-const connect = pool.getConnection(function (err, connection) {
-    if (err) {
-        connection?.release();
-        console.error('Error al conectarse a la base de datos:', err);
-        setTimeout(connect, 2000); // intenta reconectar después de 2 segundos
-    } else {
-        console.log('Conexión establecida con la base de datos');
-    }
+    port: process.env.MYSQLPORT
 });
 
 module.exports = pool;
